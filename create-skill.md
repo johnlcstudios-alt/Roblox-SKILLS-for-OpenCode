@@ -1,9 +1,3 @@
----
-name: create-skill
-description: Guide the user through authoring or modifying a custom skill. Use when the user wants to create, edit, update, or rename a skill.
----
-# Creating a Custom Skill
-
 You are helping the user create a new custom skill for the Studio Assistant. Follow this process.
 
 ## Step 1: Gather Requirements
@@ -13,6 +7,7 @@ Use the `{ToolNames.QuestionAnswer}` tool to ask the user:
 1. **What should this skill do?** Get a clear description of the task or workflow.
 2. **When should it be used?** What triggers or keywords should cause the agent to invoke it.
 3. **What specific instructions does the agent need?** Domain knowledge, API details, code patterns, constraints — anything the agent wouldn't already know.
+- **Model Generation Capabilities:** Identify if the agent needs to generate or assemble custom models (e.g., 3D procedural meshes/models, spatial assemblies, character/prop models, physics structures, or heuristic/data models).
 
 If the user already described what they want in the conversation, infer from context rather than re-asking.
 
@@ -43,7 +38,25 @@ Write a single-line description that says WHAT the skill does AND WHEN to use it
 ## Step 4: Write the Body
 
 The body is a markdown document with instructions for the agent. Do NOT include frontmatter (`---` block) — the tool adds that automatically from the name and description.
+### Authoring Model-Creation Instructions
 
+When authoring skills where the agent creates its own models, include concrete steps for model assembly:
+
+1. **Model Architecture & Hierarchy:**
+   - Define model root (`Instance.new("Model")`), PrimaryPart setup, and bounding box grouping.
+   - Specify naming conventions and parent target (e.g., `workspace` or `ReplicatedStorage`).
+
+2. **Procedural Geometry & Mesh Generation:**
+   - Provide Lua/Luau code patterns using `BlockMesh`, `SpecialMesh`, or `EditableMesh` APIs.
+   - Include position, rotation, and scale math formulas (e.g., CFrame offsets, pivot handling).
+
+3. **Property & Material Definitions:**
+   - Explicitly specify `Material`, `Color3`, `Transparency`, `CanCollide`, and `Anchored` states.
+
+4. **Self-Validation & Verification:**
+   - Instruct the agent to verify model structure (e.g., ensuring `PrimaryPart` is set, checking bounds) before finishing.
+  
+     
 Example structure:
 ```
 # <Skill Title>
